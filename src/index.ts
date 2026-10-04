@@ -1,6 +1,6 @@
 import { createPublicClient, http } from "viem";
 
-const GATEWAY_URL = "https://api.blockvectra.com/v1";
+const API_BASE_URL = "https://api.blockvectra.com/v1";
 
 export interface MethodPolicy {
   allow?: string[];
@@ -56,7 +56,7 @@ export function createBlockVectraClient(chainSlug: string, apiKey?: string) {
     headers["x-api-key"] = apiKey;
   }
   return createPublicClient({
-    transport: http(`${GATEWAY_URL}/${chainSlug}`, {
+    transport: http(`${API_BASE_URL}/${chainSlug}`, {
       fetchOptions: { headers },
     }),
   });
@@ -69,7 +69,7 @@ async function main() {
 
   // 1. Discover all chains dynamically from GET /v1/chains
   console.log("\n[1/3] Fetching public chain directory from GET /v1/chains...");
-  const chainsRes = await fetch(`${GATEWAY_URL}/chains`);
+  const chainsRes = await fetch(`${API_BASE_URL}/chains`);
   if (!chainsRes.ok) {
     throw new Error(`Failed to fetch /v1/chains: HTTP ${chainsRes.status}`);
   }
