@@ -90,7 +90,7 @@ For pricing details and free credit allowances, see the [Pricing page](https://b
 
 ### Unauthenticated Verification (No Key Required)
 
-If `BLOCKVECTRA_API_KEY` is not provided, the template performs dynamic chain discovery and method policy evaluation, then executes the RPC queries to demonstrate the standard unauthenticated gateway response:
+If `BLOCKVECTRA_API_KEY` is not provided, the template performs dynamic chain discovery and method policy evaluation, then executes the RPC queries to demonstrate the standard unauthenticated API response:
 
 ```bash
 npm start

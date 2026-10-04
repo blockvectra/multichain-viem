@@ -90,7 +90,7 @@ API Key 在所有链、JSON-RPC 与 Data API 间通用。可以通过以下方�
 
 ### 1. 未配置 Key 验证（无需 Key）
 
-若环境变量未设置 `BLOCKVECTRA_API_KEY`，示例将完成公共链信息发现与方法策略校验，并在 RPC 查询阶段演示未授权请求的标准网关返回：
+若环境变量未设置 `BLOCKVECTRA_API_KEY`，示例将完成公共链信息发现与方法策略校验，并在 RPC 查询阶段演示未授权请求的标准接口返回：
 
 ```bash
 npm start
