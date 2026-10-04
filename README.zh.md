@@ -2,7 +2,7 @@
 
 本示例展示如何动态发现 BlockVectra 支持的所有区块链网络，使用同一把 API Key 为各链创建 [viem](https://viem.sh/) 公共客户端（Public Client），并发查询各链最新区块高度与 Chain ID，并在调用前基于官方方法策略（Method Policy）完成可用性预检。
 
-参考文档：[一把 Key 走全链指南](https://docs.blockvectra.com/zh/guides/one-key-many-chains/) 与 [BlockVectra JSON-RPC 规范](https://docs.blockvectra.com/openapi/json-rpc.yaml)。
+参考文档：[一把 Key 走全链指南](https://docs.blockvectra.com/zh/guides/one-key-many-chains/?ref=gh-multichain-viem) 与 [BlockVectra JSON-RPC 规范](https://docs.blockvectra.com/openapi/json-rpc.yaml?ref=gh-multichain-viem)。
 
 ---
 
@@ -32,7 +32,7 @@ BlockVectra 依据 URL 路径中的 `{chain}` 标识将请求路由至目标链�
 
 ### 方法策略判定规则
 
-依据 [BlockVectra JSON-RPC 规范](https://docs.blockvectra.com/openapi/json-rpc.yaml)：
+依据 [BlockVectra JSON-RPC 规范](https://docs.blockvectra.com/openapi/json-rpc.yaml?ref=gh-multichain-viem)：
 - **`methods.allow`**：节点确认支持的具体方法名列表（精确匹配，无通配符）。
 - **`methods.deny`**：显式禁止的方法或前缀规则（如 `eth_subscribe`、`eth_newFilter`）。
 - **优先级原则**：命中 `deny` 规则一律拒绝，即使存在于 `allow` 中也以 `deny` 为准（deny 优先）。
@@ -79,10 +79,10 @@ BlockVectra 依据 URL 路径中的 `{chain}` 标识将请求路由至目标链�
 
 API Key 在所有链、JSON-RPC 与 Data API 间通用。可以通过以下方式获取：
 
-1. **网页控制台**：登录并在控制台创建 API Key：[https://blockvectra.com/zh/get-api-key/](https://blockvectra.com/zh/get-api-key/)。
-2. **程序化开户**：使用以太坊钱包私钥（EIP-191 / SIWE）完成签名认证，并通过 `POST https://console-api.blockvectra.com/v1/keys` 创建 API Key。详见 [程序化开户指南](https://docs.blockvectra.com/zh/guides/programmatic-signup/)。
+1. **网页控制台**：登录并在控制台创建 API Key：[https://blockvectra.com/zh/get-api-key/](https://blockvectra.com/zh/get-api-key/?ref=gh-multichain-viem)。
+2. **程序化开户**：使用以太坊钱包私钥（EIP-191 / SIWE）完成签名认证，并通过 `POST https://console-api.blockvectra.com/v1/keys` 创建 API Key。详见 [程序化开户指南](https://docs.blockvectra.com/zh/guides/programmatic-signup/?ref=gh-multichain-viem)。
 
-关于定价与免费额度详情，请参阅 [定价页面](https://blockvectra.com/zh/pricing/)。
+关于定价与免费额度详情，请参阅 [定价页面](https://blockvectra.com/zh/pricing/?ref=gh-multichain-viem)。
 
 ---
 
@@ -168,11 +168,11 @@ Robinhood Chain 数据仅代表链上活动数据，不是股价，不构成投�
 
 ## 相关文档与规范
 
-- [一把 Key 走全链指南](https://docs.blockvectra.com/zh/guides/one-key-many-chains/)
-- [JSON-RPC OpenAPI 规范](https://docs.blockvectra.com/openapi/json-rpc.yaml)
-- [Data API OpenAPI 规范](https://docs.blockvectra.com/openapi/data.yaml)
-- [价格与方案](https://blockvectra.com/zh/pricing/)
-- [程序化开户指南](https://docs.blockvectra.com/zh/guides/programmatic-signup/)
+- [一把 Key 走全链指南](https://docs.blockvectra.com/zh/guides/one-key-many-chains/?ref=gh-multichain-viem)
+- [JSON-RPC OpenAPI 规范](https://docs.blockvectra.com/openapi/json-rpc.yaml?ref=gh-multichain-viem)
+- [Data API OpenAPI 规范](https://docs.blockvectra.com/openapi/data.yaml?ref=gh-multichain-viem)
+- [价格与方案](https://blockvectra.com/zh/pricing/?ref=gh-multichain-viem)
+- [程序化开户指南](https://docs.blockvectra.com/zh/guides/programmatic-signup/?ref=gh-multichain-viem)
 
 ---
 

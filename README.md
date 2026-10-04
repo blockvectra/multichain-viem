@@ -2,7 +2,7 @@
 
 A minimal, production-grade TypeScript template demonstrating how to dynamically discover all BlockVectra-supported blockchain networks, create [viem](https://viem.sh/) public clients for each network using a single API key, query live chain states concurrently, and evaluate RPC method policies programmatically.
 
-Based on the [One key, many chains guide](https://docs.blockvectra.com/en/guides/one-key-many-chains/) and the [BlockVectra JSON-RPC specification](https://docs.blockvectra.com/openapi/json-rpc.yaml).
+Based on the [One key, many chains guide](https://docs.blockvectra.com/en/guides/one-key-many-chains/?ref=gh-multichain-viem) and the [BlockVectra JSON-RPC specification](https://docs.blockvectra.com/openapi/json-rpc.yaml?ref=gh-multichain-viem).
 
 ---
 
@@ -32,7 +32,7 @@ BlockVectra routes JSON-RPC calls by chain slug in the URL path. All supported c
 
 ### Method Policy Evaluation Rules
 
-According to the [BlockVectra JSON-RPC Specification](https://docs.blockvectra.com/openapi/json-rpc.yaml):
+According to the [BlockVectra JSON-RPC Specification](https://docs.blockvectra.com/openapi/json-rpc.yaml?ref=gh-multichain-viem):
 - **`methods.allow`**: Curated list of concrete method names confirmed to be supported by the chain's underlying node.
 - **`methods.deny`**: Explicitly blocked methods or prefix wildcards (e.g., `eth_subscribe`, `eth_newFilter`).
 - **Precedence**: Any match in `deny` takes precedence over `allow` ("deny wins").
@@ -79,10 +79,10 @@ According to the [BlockVectra JSON-RPC Specification](https://docs.blockvectra.c
 
 API keys are pooled across all chains, JSON-RPC, and the Data API. You can obtain a key through either method:
 
-1. **Web Console**: Log in and create a key at [https://blockvectra.com/en/get-api-key/](https://blockvectra.com/en/get-api-key/).
-2. **Programmatic Onboarding**: Sign in headlessly via Ethereum wallet signature (EIP-191 / SIWE) and generate an API key via `POST https://console-api.blockvectra.com/v1/keys`. See the [Programmatic Sign-up Guide](https://docs.blockvectra.com/en/guides/programmatic-signup/).
+1. **Web Console**: Log in and create a key at [https://blockvectra.com/en/get-api-key/](https://blockvectra.com/en/get-api-key/?ref=gh-multichain-viem).
+2. **Programmatic Onboarding**: Sign in headlessly via Ethereum wallet signature (EIP-191 / SIWE) and generate an API key via `POST https://console-api.blockvectra.com/v1/keys`. See the [Programmatic Sign-up Guide](https://docs.blockvectra.com/en/guides/programmatic-signup/?ref=gh-multichain-viem).
 
-For pricing details and free credit allowances, see the [Pricing page](https://blockvectra.com/en/pricing/).
+For pricing details and free credit allowances, see the [Pricing page](https://blockvectra.com/en/pricing/?ref=gh-multichain-viem).
 
 ---
 
@@ -168,11 +168,11 @@ Robinhood Chain data represents on-chain activity data only; not stock prices, a
 
 ## Related Specifications & Documentation
 
-- [One key, many chains guide](https://docs.blockvectra.com/en/guides/one-key-many-chains/)
-- [JSON-RPC OpenAPI Specification](https://docs.blockvectra.com/openapi/json-rpc.yaml)
-- [Data API OpenAPI Specification](https://docs.blockvectra.com/openapi/data.yaml)
-- [Plans & Pricing](https://blockvectra.com/en/pricing/)
-- [Programmatic Sign-up Guide](https://docs.blockvectra.com/en/guides/programmatic-signup/)
+- [One key, many chains guide](https://docs.blockvectra.com/en/guides/one-key-many-chains/?ref=gh-multichain-viem)
+- [JSON-RPC OpenAPI Specification](https://docs.blockvectra.com/openapi/json-rpc.yaml?ref=gh-multichain-viem)
+- [Data API OpenAPI Specification](https://docs.blockvectra.com/openapi/data.yaml?ref=gh-multichain-viem)
+- [Plans & Pricing](https://blockvectra.com/en/pricing/?ref=gh-multichain-viem)
+- [Programmatic Sign-up Guide](https://docs.blockvectra.com/en/guides/programmatic-signup/?ref=gh-multichain-viem)
 
 ---
 
