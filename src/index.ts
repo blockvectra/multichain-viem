@@ -142,8 +142,8 @@ async function main() {
   if (!apiKey) {
     console.log("ℹ️  Note: RPC requests returned 401 missing_api_key because BLOCKVECTRA_API_KEY is not set.");
     console.log("   To query live block data, obtain an API key and set BLOCKVECTRA_API_KEY.");
-    console.log("   Web Console: https://blockvectra.com/en/get-api-key/");
-    console.log("   Programmatic Onboarding: https://docs.blockvectra.com/en/guides/programmatic-signup/\n");
+    console.log("   Web Console: https://blockvectra.com/en/get-api-key/?ref=gh-multichain-viem");
+    console.log("   Programmatic Onboarding: https://docs.blockvectra.com/en/guides/programmatic-signup/?ref=gh-multichain-viem\n");
   } else {
     console.log("Query complete.\n");
   }
