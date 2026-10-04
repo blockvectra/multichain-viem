@@ -129,8 +129,8 @@ Discovered 5 supported networks.
 └─────────┴─────────────────────┴───────────────────┴─────────────┴──────────────┴──────────────┴───────────────────────┘
 ℹ️  Note: RPC requests returned 401 missing_api_key because BLOCKVECTRA_API_KEY is not set.
    To query live block data, obtain an API key and set BLOCKVECTRA_API_KEY.
-   Web Console: https://blockvectra.com/zh/get-api-key/
-   Programmatic Onboarding: https://docs.blockvectra.com/zh/guides/programmatic-signup/
+   Web Console: https://blockvectra.com/zh/get-api-key/?ref=gh-multichain-viem
+   Programmatic Onboarding: https://docs.blockvectra.com/zh/guides/programmatic-signup/?ref=gh-multichain-viem
 
 Notice: On-chain activity data only; not stock prices, and does not constitute investment advice.
 ```
