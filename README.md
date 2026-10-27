@@ -1,6 +1,6 @@
 # BlockVectra Multichain viem Template
 
-A minimal, production-grade TypeScript template demonstrating how to dynamically discover all BlockVectra-supported blockchain networks, create [viem](https://viem.sh/) public clients for each network using a single API key, query live chain states concurrently, and evaluate RPC method policies programmatically.
+A TypeScript example that discovers BlockVectra networks, creates [viem](https://viem.sh/) clients with one API key, displays method-policy checks and compares RPC chain IDs with the directory.
 
 Based on the [One key, many chains guide](https://docs.blockvectra.com/en/guides/one-key-many-chains/?ref=gh-multichain-viem) and the [BlockVectra JSON-RPC specification](https://docs.blockvectra.com/openapi/json-rpc.yaml?ref=gh-multichain-viem).
 
@@ -49,9 +49,10 @@ According to the [BlockVectra JSON-RPC Specification](https://docs.blockvectra.c
 
 ## Installation & Setup
 
-1. Navigate to the project directory:
+1. Clone the repository and enter its directory:
 
    ```bash
+   git clone https://github.com/blockvectra/multichain-viem.git
    cd multichain-viem
    ```
 
@@ -61,17 +62,13 @@ According to the [BlockVectra JSON-RPC Specification](https://docs.blockvectra.c
    npm install
    ```
 
-3. (Optional) Configure your API key:
+3. Set your API key in the shell that will run the example:
 
    ```bash
-   cp .env.example .env
+   export BLOCKVECTRA_API_KEY="your_api_key"
    ```
 
-   Edit `.env` and set your key:
-
-   ```bash
-   BLOCKVECTRA_API_KEY="rgw_your_api_key_here"
-   ```
+   `npm start` reads this environment variable; it does not load `.env` automatically.
 
 ---
 
@@ -88,75 +85,15 @@ For pricing details and free credit allowances, see the [Pricing page](https://b
 
 ## Running the Example
 
-### Unauthenticated Verification (No Key Required)
-
-If `BLOCKVECTRA_API_KEY` is not provided, the template performs dynamic chain discovery and method policy evaluation, then executes the RPC queries to demonstrate the standard unauthenticated API response:
+With `BLOCKVECTRA_API_KEY` exported in the same shell, run:
 
 ```bash
 npm start
 ```
 
-#### Actual Execution Output
+The program prints the current chain directory, method-policy evaluations and a table of RPC results. For each network with JSON-RPC enabled, it requests the latest block number and chain ID, then reports whether the chain ID matches the directory or an error occurred. The policy table is informational; it does not skip subsequent requests.
 
-```text
-=== BlockVectra Multichain Viem Template ===
-
-API Key status: None (testing unauthenticated flow)
-
-[1/3] Fetching public chain directory from GET /v1/chains...
-Discovered 5 supported networks.
-
-[2/3] Demonstrating method policy evaluation across chains:
-┌─────────┬─────────────────────┬─────────────────┬───────────────┬────────────────────────┬─────────────┬───────────────┐
-│ (index) │ Chain Slug          │ eth_blockNumber │ eth_subscribe │ debug_traceTransaction │ trace_block │ personal_sign │
-├─────────┼─────────────────────┼─────────────────┼───────────────┼────────────────────────┼─────────────┼───────────────┤
-│ 0       │ 'base_mainnet'      │ 'ALLOW'         │ 'DENY'        │ 'NO'                   │ 'NO'        │ 'NO'          │
-│ 1       │ 'bsc_mainnet'       │ 'ALLOW'         │ 'DENY'        │ 'NO'                   │ 'NO'        │ 'NO'          │
-│ 2       │ 'eth_mainnet'       │ 'ALLOW'         │ 'DENY'        │ 'ALLOW'                │ 'ALLOW'     │ 'NO'          │
-│ 3       │ 'hyperevm_mainnet'  │ 'ALLOW'         │ 'DENY'        │ 'NO'                   │ 'NO'        │ 'NO'          │
-│ 4       │ 'robinhood_mainnet' │ 'ALLOW'         │ 'DENY'        │ 'ALLOW'                │ 'NO'        │ 'NO'          │
-└─────────┴─────────────────────┴─────────────────┴───────────────┴────────────────────────┴─────────────┴───────────────┘
-
-[3/3] Concurrently querying live RPC (eth_chainId & eth_blockNumber) via viem...
-┌─────────┬─────────────────────┬───────────────────┬─────────────┬──────────────┬──────────────┬───────────────────────┐
-│ (index) │ Chain Slug          │ Network Name      │ Expected ID │ RPC Chain ID │ Latest Block │ RPC Status            │
-├─────────┼─────────────────────┼───────────────────┼─────────────┼──────────────┼──────────────┼───────────────────────┤
-│ 0       │ 'base_mainnet'      │ 'Base'            │ 8453        │ '—'          │ '—'          │ '401 missing_api_key' │
-│ 1       │ 'bsc_mainnet'       │ 'BNB Smart Chain' │ 56          │ '—'          │ '—'          │ '401 missing_api_key' │
-│ 2       │ 'eth_mainnet'       │ 'Ethereum'        │ 1           │ '—'          │ '—'          │ '401 missing_api_key' │
-│ 3       │ 'hyperevm_mainnet'  │ 'HyperEVM'        │ 999         │ '—'          │ '—'          │ '401 missing_api_key' │
-│ 4       │ 'robinhood_mainnet' │ 'Robinhood Chain' │ 4663        │ '—'          │ '—'          │ '401 missing_api_key' │
-└─────────┴─────────────────────┴───────────────────┴─────────────┴──────────────┴──────────────┴───────────────────────┘
-ℹ️  Note: RPC requests returned 401 missing_api_key because BLOCKVECTRA_API_KEY is not set.
-   To query live block data, obtain an API key and set BLOCKVECTRA_API_KEY.
-   Web Console: https://blockvectra.com/en/get-api-key/?ref=gh-multichain-viem
-   Programmatic Onboarding: https://docs.blockvectra.com/en/guides/programmatic-signup/?ref=gh-multichain-viem
-
-Notice: On-chain activity data only; not stock prices, and does not constitute investment advice.
-```
-
-### Authenticated Run (With API Key)
-
-When `BLOCKVECTRA_API_KEY` is set, viem sends the key in the `x-api-key` header, successfully retrieving live block numbers and chain IDs across all chains:
-
-```bash
-export BLOCKVECTRA_API_KEY="rgw_..."
-npm start
-```
-
-Expected table output:
-
-```text
-┌─────────┬─────────────────────┬───────────────────┬─────────────┬──────────────┬──────────────┬────────────────────┐
-│ (index) │ Chain Slug          │ Network Name      │ Expected ID │ RPC Chain ID │ Latest Block │ RPC Status         │
-├─────────┼─────────────────────┼───────────────────┼─────────────┼──────────────┼──────────────┼────────────────────┤
-│ 0       │ 'base_mainnet'      │ 'Base'            │ 8453        │ 8453         │ '27189104'   │ '200 OK (Matched)' │
-│ 1       │ 'bsc_mainnet'       │ 'BNB Smart Chain' │ 56          │ 56           │ '43105820'   │ '200 OK (Matched)' │
-│ 2       │ 'eth_mainnet'       │ 'Ethereum'        │ 1           │ 1            │ '21820492'   │ '200 OK (Matched)' │
-│ 3       │ 'hyperevm_mainnet'  │ 'HyperEVM'        │ 999         │ 999          │ '1849201'    │ '200 OK (Matched)' │
-│ 4       │ 'robinhood_mainnet' │ 'Robinhood Chain' │ 4663        │ 4663         │ '77215402'   │ '200 OK (Matched)' │
-└─────────┴─────────────────────┴───────────────────┴─────────────┴──────────────┴──────────────┴────────────────────┘
-```
+Without a key, the program still requests `/v1/{chain}` without authentication. It does not switch to a keyless `/public` endpoint. For a keyless first read, use the [Robinhood Testnet Starter](https://github.com/blockvectra/robinhood-testnet-starter).
 
 ---
 
