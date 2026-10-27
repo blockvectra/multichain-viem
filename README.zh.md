@@ -1,6 +1,6 @@
 # BlockVectra 多链 viem 模板
 
-本示例展示如何动态发现 BlockVectra 支持的所有区块链网络，使用同一把 API Key 为各链创建 [viem](https://viem.sh/) 公共客户端（Public Client），并发查询各链最新区块高度与 Chain ID，并在调用前基于官方方法策略（Method Policy）完成可用性预检。
+本 TypeScript 示例动态读取 BlockVectra 链目录，使用同一把 API Key 创建 [viem](https://viem.sh/) 客户端，展示方法策略判断，并将 RPC 返回的链号与目录对照。
 
 参考文档：[一把 Key 走全链指南](https://docs.blockvectra.com/zh/guides/one-key-many-chains/?ref=gh-multichain-viem) 与 [BlockVectra JSON-RPC 规范](https://docs.blockvectra.com/openapi/json-rpc.yaml?ref=gh-multichain-viem)。
 
@@ -49,9 +49,10 @@ BlockVectra 依据 URL 路径中的 `{chain}` 标识将请求路由至目标链�
 
 ## 安装与配置
 
-1. 进入项目目录：
+1. 克隆仓库并进入项目目录：
 
    ```bash
+   git clone https://github.com/blockvectra/multichain-viem.git
    cd multichain-viem
    ```
 
@@ -61,17 +62,13 @@ BlockVectra 依据 URL 路径中的 `{chain}` 标识将请求路由至目标链�
    npm install
    ```
 
-3. （可选）配置环境变量：
+3. 在运行示例的 shell 中设置 API Key：
 
    ```bash
-   cp .env.example .env
+   export BLOCKVECTRA_API_KEY="your_api_key"
    ```
 
-   在 `.env` 中填入你的 API Key：
-
-   ```bash
-   BLOCKVECTRA_API_KEY="rgw_your_api_key_here"
-   ```
+   `npm start` 读取这个环境变量，不会自动加载 `.env`。
 
 ---
 
@@ -88,75 +85,15 @@ API Key 在所有链、JSON-RPC 与 Data API 间通用。可以通过以下方�
 
 ## 运行示例
 
-### 1. 未配置 Key 验证（无需 Key）
-
-若环境变量未设置 `BLOCKVECTRA_API_KEY`，示例将完成公共链信息发现与方法策略校验，并在 RPC 查询阶段演示未授权请求的标准接口返回：
+在同一 shell 中设置 `BLOCKVECTRA_API_KEY` 后运行：
 
 ```bash
 npm start
 ```
 
-#### 实测控制台输出
+程序输出当前链目录、方法策略判断和 RPC 结果表。对每个启用 JSON-RPC 的网络，它会请求最新区块高度与链号，并显示链号是否与目录一致，或请求发生的错误。策略表仅展示判断结果，不会据此跳过后续请求。
 
-```text
-=== BlockVectra Multichain Viem Template ===
-
-API Key status: None (testing unauthenticated flow)
-
-[1/3] Fetching public chain directory from GET /v1/chains...
-Discovered 5 supported networks.
-
-[2/3] Demonstrating method policy evaluation across chains:
-┌─────────┬─────────────────────┬─────────────────┬───────────────┬────────────────────────┬─────────────┬───────────────┐
-│ (index) │ Chain Slug          │ eth_blockNumber │ eth_subscribe │ debug_traceTransaction │ trace_block │ personal_sign │
-├─────────┼─────────────────────┼─────────────────┼───────────────┼────────────────────────┼─────────────┼───────────────┤
-│ 0       │ 'base_mainnet'      │ 'ALLOW'         │ 'DENY'        │ 'NO'                   │ 'NO'        │ 'NO'          │
-│ 1       │ 'bsc_mainnet'       │ 'ALLOW'         │ 'DENY'        │ 'NO'                   │ 'NO'        │ 'NO'          │
-│ 2       │ 'eth_mainnet'       │ 'ALLOW'         │ 'DENY'        │ 'ALLOW'                │ 'ALLOW'     │ 'NO'          │
-│ 3       │ 'hyperevm_mainnet'  │ 'ALLOW'         │ 'DENY'        │ 'NO'                   │ 'NO'        │ 'NO'          │
-│ 4       │ 'robinhood_mainnet' │ 'ALLOW'         │ 'DENY'        │ 'ALLOW'                │ 'NO'        │ 'NO'          │
-└─────────┴─────────────────────┴─────────────────┴───────────────┴────────────────────────┴─────────────┴───────────────┘
-
-[3/3] Concurrently querying live RPC (eth_chainId & eth_blockNumber) via viem...
-┌─────────┬─────────────────────┬───────────────────┬─────────────┬──────────────┬──────────────┬───────────────────────┐
-│ (index) │ Chain Slug          │ Network Name      │ Expected ID │ RPC Chain ID │ Latest Block │ RPC Status            │
-├─────────┼─────────────────────┼───────────────────┼─────────────┼──────────────┼──────────────┼───────────────────────┤
-│ 0       │ 'base_mainnet'      │ 'Base'            │ 8453        │ '—'          │ '—'          │ '401 missing_api_key' │
-│ 1       │ 'bsc_mainnet'       │ 'BNB Smart Chain' │ 56          │ '—'          │ '—'          │ '401 missing_api_key' │
-│ 2       │ 'eth_mainnet'       │ 'Ethereum'        │ 1           │ '—'          │ '—'          │ '401 missing_api_key' │
-│ 3       │ 'hyperevm_mainnet'  │ 'HyperEVM'        │ 999         │ '—'          │ '—'          │ '401 missing_api_key' │
-│ 4       │ 'robinhood_mainnet' │ 'Robinhood Chain' │ 4663        │ '—'          │ '—'          │ '401 missing_api_key' │
-└─────────┴─────────────────────┴───────────────────┴─────────────┴──────────────┴──────────────┴───────────────────────┘
-ℹ️  Note: RPC requests returned 401 missing_api_key because BLOCKVECTRA_API_KEY is not set.
-   To query live block data, obtain an API key and set BLOCKVECTRA_API_KEY.
-   Web Console: https://blockvectra.com/zh/get-api-key/?ref=gh-multichain-viem
-   Programmatic Onboarding: https://docs.blockvectra.com/zh/guides/programmatic-signup/?ref=gh-multichain-viem
-
-Notice: On-chain activity data only; not stock prices, and does not constitute investment advice.
-```
-
-### 2. 配置 Key 运行
-
-设置有效 API Key 后，viem 会在请求头中附带 `x-api-key`，并发拉取各链实时数据：
-
-```bash
-export BLOCKVECTRA_API_KEY="rgw_..."
-npm start
-```
-
-预期对照表输出：
-
-```text
-┌─────────┬─────────────────────┬───────────────────┬─────────────┬──────────────┬──────────────┬────────────────────┐
-│ (index) │ Chain Slug          │ Network Name      │ Expected ID │ RPC Chain ID │ Latest Block │ RPC Status         │
-├─────────┼─────────────────────┼───────────────────┼─────────────┼──────────────┼──────────────┼────────────────────┤
-│ 0       │ 'base_mainnet'      │ 'Base'            │ 8453        │ 8453         │ '27189104'   │ '200 OK (Matched)' │
-│ 1       │ 'bsc_mainnet'       │ 'BNB Smart Chain' │ 56          │ 56           │ '43105820'   │ '200 OK (Matched)' │
-│ 2       │ 'eth_mainnet'       │ 'Ethereum'        │ 1           │ 1            │ '21820492'   │ '200 OK (Matched)' │
-│ 3       │ 'hyperevm_mainnet'  │ 'HyperEVM'        │ 999         │ 999          │ '1849201'    │ '200 OK (Matched)' │
-│ 4       │ 'robinhood_mainnet' │ 'Robinhood Chain' │ 4663        │ 4663         │ '77215402'   │ '200 OK (Matched)' │
-└─────────┴─────────────────────┴───────────────────┴─────────────┴──────────────┴──────────────┴────────────────────┘
-```
+未设置 Key 时，程序仍会向 `/v1/{chain}` 发送未认证请求，不会切换到免 Key 的 `/public` 端点。要先体验免 Key 读取，可使用 [Robinhood 测试网 Starter](https://github.com/blockvectra/robinhood-testnet-starter/blob/main/README.zh.md)。
 
 ---
 
